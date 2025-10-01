@@ -13,19 +13,20 @@ const RecentItems = () => {
     fetchRecentItems();
   }, []);
 
-  const fetchRecentItems = async () => {
-    try {
-      setLoading(true);
-      const response = await getFoundItems();
-      console.log("Recent items API:", response);
-      setItems(response.data || []);
-    } catch (err) {
-      setError("Failed to load recent items");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchRecentItems = async () => {
+  try {
+    setLoading(true);
+    const items = await getFoundItems(); // already returns an array
+    console.log("Recent items API:", items);
+    setItems(items || []);
+  } catch (err) {
+    setError("Failed to load recent items");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleClaim = (itemId) => {
     navigate("/report-lost", {

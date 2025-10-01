@@ -1,12 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { reportFoundItem } from "../../api/itemsService"; 
+
 
 // Mock API call since the original service file is not available
-const reportFoundItem = async (formData) => {
-  console.log('Reporting found item:', formData);
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  return { success: true, message: 'Report submitted successfully!' };
-};
+
 
 const FoundItemForm = ({ onBack }) => {
   const navigate = useNavigate();
@@ -65,41 +63,37 @@ const FoundItemForm = ({ onBack }) => {
     handleImageChange(e);
   }, [handleImageChange]);
 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ success: null, message: '' });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setSubmitStatus({ success: null, message: '' });
 
-    const formData = new FormData();
-    Object.keys(form).forEach(key => {
-      formData.append(key, form[key]);
-    });
+  const formData = new FormData();
+  Object.keys(form).forEach(key => {
+    formData.append(key, form[key]);
+  });
 
-    //  Important: add status field
-    formData.append("status", "found");
+  // Ensure status is 'found'
+  formData.append("status", "found");
 
-    //  Use the same key as backend (likely 'image')
-    if (image) {
-      formData.append("image", image);
-    }
+  if (image) {
+    formData.append("image", image);
+  }
 
-    // 🔎 Debug log to verify data
-    console.log("Reporting found item:");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+  try {
+    const response = await reportFoundItem(formData);  // ✅ sends to backend
+    setSubmitStatus({ success: true, message: response.message });
+    setShowPopup(true);
 
-    try {
-      const response = await reportFoundItem(formData);
-      setSubmitStatus({ success: true, message: response.message });
-      setShowPopup(true);
-      setTimeout(() => navigate('/lostButFound'), 3000);
-    } catch (err) {
-      setSubmitStatus({ success: false, message: err.message || 'Submission failed. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    // reload items after submit
+    setTimeout(() => navigate('/lostButFound'), 3000);
+  } catch (err) {
+    setSubmitStatus({ success: false, message: err.message || 'Submission failed. Please try again.' });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
 
   return (
@@ -329,209 +323,3 @@ const FoundItemForm = ({ onBack }) => {
 };
 
 export default FoundItemForm;
-
-
-
-
-
-
-
-
-
-
-// import React, { useState, useCallback } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { reportFoundItem } from '../../api/api';
-// import { FaArrowLeft, FaImage, FaCalendarAlt, FaClock, FaMapMarkerAlt, FaUser, FaIdCard, FaPhone, FaEnvelope } from 'react-icons/fa';
-
-// const FoundItemForm = ({ onBack }) => {
-//   const navigate = useNavigate();
-//   const [form, setForm] = useState({
-//     itemName: '', dateFound: '', timeFound: '', foundLocation: '', itemDescription: '',
-//     fullName: '', matricNumber: '', phoneNumber: '', email: '', shareInfo: false, adminContact: false
-//   });
-//   const [image, setImage] = useState(null);
-//   const [imagePreview, setImagePreview] = useState(null);
-//   const [isDragging, setIsDragging] = useState(false);
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [submitStatus, setSubmitStatus] = useState({ success: null, message: '' });
-//   const [showPopup, setShowPopup] = useState(false);
-
-//   const handleChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-//   };
-
-//   const handleImageChange = useCallback((e) => {
-//     const file = e.target.files?.[0] || (e.dataTransfer?.files?.[0]);
-//     if (file && file.type.startsWith('image/')) {
-//       setImage(file);
-//       const reader = new FileReader();
-//       reader.onloadend = () => setImagePreview(reader.result);
-//       reader.readAsDataURL(file);
-//     }
-//   }, []);
-
-//   const handleDragOver = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); };
-//   const handleDragLeave = () => setIsDragging(false);
-//   const handleDrop = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); handleImageChange(e); };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!form.itemName || !form.dateFound || !form.timeFound || !form.foundLocation ||
-//         !form.itemDescription || !form.fullName || !form.phoneNumber || !form.email) {
-//       setSubmitStatus({ success: false, message: 'Please fill in all required fields' });
-//       return;
-//     }
-//     setIsSubmitting(true);
-//     setSubmitStatus({ success: null, message: '' });
-//     try {
-//       const formData = new FormData();
-//       Object.entries({ ...form, status: 'found' }).forEach(([k, v]) => { if (v !== null && v !== undefined) formData.append(k, v); });
-//       if (image) formData.append('image', image);
-//       await reportFoundItem(formData);
-//       setShowPopup(true);
-//       setForm({ itemName: '', dateFound: '', timeFound: '', foundLocation: '', itemDescription: '',
-//                 fullName: '', matricNumber: '', phoneNumber: '', email: '', shareInfo: false, adminContact: false });
-//       setImage(null); setImagePreview(null);
-//     } catch (error) {
-//       setSubmitStatus({ success: false, message: error.message || 'Failed to submit form. Please try again.' });
-//     } finally { setIsSubmitting(false); }
-//   };
-
-//   const handlePopupClose = () => { setShowPopup(false); navigate('/'); };
-
-//   return (
-//     <div className="relative max-w-3xl mx-auto p-6 md:p-8 mt-8 bg-gray-100 border-4 border-purple-700 rounded-3xl shadow-lg">
-//       {/* Popup */}
-//       {showPopup && (
-//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-//           <div className="bg-white rounded-xl p-8 shadow-xl text-center max-w-sm w-full">
-//             <h3 className="text-green-600 text-lg font-bold mb-4">Submission Successful!</h3>
-//             <p className="text-gray-600 mb-6">Thank you, Admin will update you if necessary.</p>
-//             <button className="bg-purple-700 hover:bg-purple-800 text-white px-6 py-2 rounded-md font-semibold" onClick={handlePopupClose}>OK</button>
-//           </div>
-//         </div>
-//       )}
-
-//       {/* Back Button */}
-//       <button className="absolute top-6 left-6 p-2 rounded shadow text-purple-700 hover:bg-purple-700 hover:text-white transition-transform transform hover:-translate-x-1" onClick={onBack} aria-label="Go back">
-//         <FaArrowLeft size={24}/>
-//       </button>
-
-//       {/* Title */}
-//       <h2 className="text-center text-white bg-purple-700 rounded-xl py-2 text-xl font-bold mb-8 border-b-2 border-gray-200 w-4/5 mx-auto">FOUND ITEM REPORT FORM</h2>
-
-//       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-//         {/* Item Info */}
-//         <div className="text-center font-semibold text-lg mb-4">Item Information</div>
-        
-//         <div className="flex flex-col gap-4">
-//           <div className="relative">
-//             <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
-//             <input type="text" name="itemName" value={form.itemName} onChange={handleChange} placeholder="Item name" required
-//               className="w-full pl-10 py-3 rounded-lg border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 bg-white text-gray-800" />
-//           </div>
-
-//           <div className="flex flex-col md:flex-row gap-4">
-//             <div className="relative flex-1">
-//               <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
-//               <input type="date" name="dateFound" value={form.dateFound} onChange={handleChange} required
-//                 className="w-full pl-10 py-3 rounded-lg border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 bg-white text-gray-800" />
-//             </div>
-//             <div className="relative flex-1">
-//               <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
-//               <input type="time" name="timeFound" value={form.timeFound} onChange={handleChange} required
-//                 className="w-full pl-10 py-3 rounded-lg border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 bg-white text-gray-800" />
-//             </div>
-//           </div>
-
-//           <div className="relative">
-//             <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
-//             <input type="text" name="foundLocation" value={form.foundLocation} onChange={handleChange} placeholder="Where was the item found?" required
-//               className="w-full pl-10 py-3 rounded-lg border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 bg-white text-gray-800" />
-//           </div>
-
-//           <textarea name="itemDescription" value={form.itemDescription} onChange={handleChange} rows={4} placeholder="Detailed description..." required
-//             className="w-full p-4 rounded-lg border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 bg-white text-gray-800 resize-y" />
-//         </div>
-
-//         {/* Upload */}
-//         <label className={`relative flex flex-col items-center justify-center border-2 rounded-xl p-8 bg-white border-dashed ${isDragging ? 'border-purple-700 bg-purple-50' : ''} ${imagePreview ? 'p-0 bg-white border-solid' : ''}`}
-//           onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}
-//         >
-//           {imagePreview ? (
-//             <div className="relative w-full h-48 flex items-center justify-center">
-//               <img src={imagePreview} alt="Preview" className="max-w-full max-h-72 object-contain"/>
-//               <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-//                 <FaImage className="text-white text-3xl mb-2"/>
-//                 <span className="text-white text-sm">Click or drag to change image</span>
-//               </div>
-//             </div>
-//           ) : (
-//             <>
-//               <FaImage className="text-purple-700 text-3xl mb-2"/>
-//               <span className="text-gray-500 text-sm text-center">Drag and drop image here or click to browse</span>
-//             </>
-//           )}
-//           <input type="file" accept="image/*" onChange={handleImageChange} className="hidden"/>
-//         </label>
-
-//         {/* Finder Info */}
-//         <div className="bg-purple-700 p-4 rounded-2xl text-white">
-//           <div className="text-center text-lg font-semibold mb-4">Enter your details</div>
-//           <div className="flex flex-col gap-4">
-//             <div className="relative">
-//               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-200"/>
-//               <input type="text" name="fullName" value={form.fullName} onChange={handleChange} placeholder="Full name" required
-//                 className="w-full pl-10 py-3 rounded-2xl border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 text-gray-800"/>
-//             </div>
-//             <div className="flex flex-col md:flex-row gap-4">
-//               <div className="relative flex-1">
-//                 <FaIdCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-200"/>
-//                 <input type="text" name="matricNumber" value={form.matricNumber} onChange={handleChange} placeholder="Matric Number" required
-//                   className="w-full pl-10 py-3 rounded-2xl border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 text-gray-800"/>
-//               </div>
-//               <div className="relative flex-1">
-//                 <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-200"/>
-//                 <input type="tel" name="phoneNumber" value={form.phoneNumber} onChange={handleChange} placeholder="Phone Number" required
-//                   className="w-full pl-10 py-3 rounded-2xl border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 text-gray-800"/>
-//               </div>
-//             </div>
-//             <div className="relative">
-//               <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-200"/>
-//               <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Email Address" required
-//                 className="w-full pl-10 py-3 rounded-2xl border border-gray-300 focus:border-purple-700 focus:ring focus:ring-purple-200 text-gray-800"/>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Checkboxes */}
-//         <div className="flex flex-col gap-2">
-//           <label className="flex items-center gap-2 cursor-pointer">
-//             <input type="checkbox" name="shareInfo" checked={form.shareInfo} onChange={handleChange} className="form-checkbox h-5 w-5 text-purple-700"/>
-//             <span className="text-gray-800 text-sm">I agree to share this information for recovery purpose</span>
-//           </label>
-//           <label className="flex items-center gap-2 cursor-pointer">
-//             <input type="checkbox" name="adminContact" checked={form.adminContact} onChange={handleChange} className="form-checkbox h-5 w-5 text-purple-700"/>
-//             <span className="text-gray-800 text-sm">Admin can contact me for verification</span>
-//           </label>
-//         </div>
-
-//         {/* Submit */}
-//         <button type="submit" disabled={isSubmitting}
-//           className={`bg-green-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg font-semibold transition-transform transform ${isSubmitting ? 'cursor-not-allowed opacity-70' : 'hover:-translate-y-1'}`}>
-//           {isSubmitting ? 'Submitting...' : 'Submit Report'}
-//         </button>
-
-//         {submitStatus.message && (
-//           <div className={`text-center py-2 rounded ${submitStatus.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-//             {submitStatus.message}
-//           </div>
-//         )}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default FoundItemForm;

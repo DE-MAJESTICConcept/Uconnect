@@ -139,7 +139,7 @@ const AdminProfiles = () => {
                   >
                     <td className="px-4 py-2">
                       <img
-                        src={item.image || "/no-image.png"}
+                        src={item.image ? `http://localhost:5000${item.image}` : "/no-image.png"}
                         alt={item.itemName}
                         className="w-16 h-16 object-cover rounded"
                       />
@@ -187,7 +187,7 @@ const AdminProfiles = () => {
                   >
                     <td className="px-4 py-2">
                       <img
-                        src={item.image || "/no-image.png"}
+                       src={item.image ? `http://localhost:5000${item.image}` : "/no-image.png"}
                         alt={item.itemName}
                         className="w-16 h-16 object-cover rounded"
                       />
@@ -219,7 +219,7 @@ const AdminProfiles = () => {
               ✖
             </button>
             <img
-              src={selectedItem.image || "/no-image.png"}
+               src={selectedItem.image ? `http://localhost:5000${selectedItem.image}` : "/no-image.png"}
               alt={selectedItem.itemName}
               className="w-full h-48 object-cover rounded mb-4"
             />

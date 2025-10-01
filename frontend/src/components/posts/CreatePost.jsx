@@ -83,7 +83,7 @@ export default function CreatePost({ onPostCreated }) {
           </select>
         </div>
         <div className="flex justify-end mt-3">
-          <button type="submit" disabled={loading} className="px-5 py-2 rounded-lg text-white bg-gradient-to-r from-[rgb(21,79,29)] via-[rgb(41,22,112)] to-[rgb(196,170,86)]">
+          <button type="submit" disabled={loading} className="px-5 py-2 rounded-lg text-white bg-gradient-to-r from-[rgb(196,170,86)] via-[rgb(196,170,86)] to-[rgb(196,170,86)]">
             {loading ? "Posting..." : "Post"}
           </button>
         </div>
