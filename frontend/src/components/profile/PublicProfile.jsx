@@ -5,16 +5,10 @@ import profileService from "../../api/profileService";
 import friendsService from "../../api/friendsService";
 import postsService from "../../api/postsService";
 import MutualFriends from "./MutualFriends";
-// import axios from "axios";
-
-
-
 import { ensureConversation } from "../../api/messagesService";
-
 
 const BACKEND_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/api\/?$/, "");
 const urlOrAbsolute = (val) => (val ? (String(val).startsWith("http") ? val : `${BACKEND_ORIGIN}${val}`) : null);
-
 
 const AvatarFallback = ({ name, size = 72 }) => {
   const initials = (name || "U").charAt(0).toUpperCase();
@@ -32,14 +26,28 @@ const PostMini = ({ post }) => {
   const media = post.media && post.media.length ? post.media : post.image ? [{ url: post.image }] : [];
   const thumb = media[0]?.url || null;
   return (
-    <Link to={`/posts/${post._id || post.id}`} className="block bg-white rounded-lg shadow p-3 hover:shadow-md transition">
+    <Link
+      to={`/posts/${post._id || post.id}`}
+      className="block bg-white rounded-lg shadow p-3 hover:shadow-md transition"
+    >
       {thumb ? (
-        <img src={thumb} alt="post thumbnail" className="w-full h-36 object-cover rounded-md mb-2" loading="lazy" />
+        <img
+          src={thumb}
+          alt="post thumbnail"
+          className="w-full h-36 object-cover rounded-md mb-2"
+          loading="lazy"
+        />
       ) : (
-        <div className="w-full h-36 bg-gray-100 rounded-md mb-2 flex items-center justify-center text-gray-400">No image</div>
+        <div className="w-full h-36 bg-gray-100 rounded-md mb-2 flex items-center justify-center text-gray-400">
+          No image
+        </div>
       )}
-      <div className="text-sm text-gray-800 font-semibold truncate">{post.content ? post.content.slice(0, 80) : "No text"}</div>
-      <div className="text-xs text-gray-500 mt-1">{new Date(post.createdAt || Date.now()).toLocaleString()}</div>
+      <div className="text-sm text-gray-800 font-semibold truncate">
+        {post.content ? post.content.slice(0, 80) : "No text"}
+      </div>
+      <div className="text-xs text-gray-500 mt-1">
+        {new Date(post.createdAt || Date.now()).toLocaleString()}
+      </div>
     </Link>
   );
 };
@@ -62,7 +70,6 @@ export default function PublicProfile() {
       setLoading(true);
       try {
         const data = await profileService.getProfileById(id);
-        console.log("🔍 Loaded profile:", data);
         setUser(data);
       } catch (e) {
         console.error("Failed to load profile", e);
@@ -104,17 +111,17 @@ export default function PublicProfile() {
   const name = user.name || "User";
   const department = user.profile?.department;
   const bio = user.profile?.bio;
-  const friendStatus = user.friendStatus || "none"; // none | self | friends | requested_sent | requested_received
+  const friendStatus = user.friendStatus || "none";
   const friendRequestId = user.friendRequestId || null;
   const isSelf = friendStatus === "self";
 
+  // --- ACTIONS ---
   const handleSendRequest = async () => {
     setActionLoading(true);
     try {
       await friendsService.sendRequest(user._id || id);
       setUser((u) => ({ ...u, friendStatus: "requested_sent" }));
     } catch (err) {
-      console.error("send request failed", err);
       alert(err?.response?.data?.message || "Failed to send request");
     } finally {
       setActionLoading(false);
@@ -128,8 +135,7 @@ export default function PublicProfile() {
       await friendsService.acceptRequest(friendRequestId);
       const freshProfile = await profileService.getProfileById(user._id || id);
       setUser(freshProfile);
-    } catch (err) {
-      console.error("accept failed", err);
+    } catch {
       alert("Failed to accept request");
     } finally {
       setActionLoading(false);
@@ -143,8 +149,7 @@ export default function PublicProfile() {
       await friendsService.rejectRequest(friendRequestId);
       const freshProfile = await profileService.getProfileById(user._id || id);
       setUser(freshProfile);
-    } catch (err) {
-      console.error("reject failed", err);
+    } catch {
       alert("Failed to reject request");
     } finally {
       setActionLoading(false);
@@ -152,39 +157,33 @@ export default function PublicProfile() {
   };
 
   const handleUnfriend = async () => {
-    const friendId = user._id || id;
     if (!confirm("Unfriend this person?")) return;
     setActionLoading(true);
     try {
-      await friendsService.unfriend(friendId);
-      const freshProfile = await profileService.getProfileById(friendId);
+      await friendsService.unfriend(user._id || id);
+      const freshProfile = await profileService.getProfileById(user._id || id);
       setUser(freshProfile);
-    } catch (err) {
-      console.error("unfriend failed", err);
+    } catch {
       alert("Failed to unfriend");
     } finally {
       setActionLoading(false);
     }
   };
- 
-const handleMessage = async () => {
-  try {
-    const friendId = user?._id || id;   // fallback to URL param if missing
-    console.log("📩 Starting conversation with:", friendId);
 
-    const conv = await ensureConversation(friendId);
-    navigate(`/messages?c=${conv._id}`); // redirect into Messages.jsx with conversation id
-  } catch (err) {
-    console.error("Error starting conversation:", err);
-    alert("Failed to start conversation");
-  }
-};
+  const handleMessage = async () => {
+    try {
+      const conv = await ensureConversation(user?._id || id);
+      navigate(`/messages?c=${conv._id}`);
+    } catch {
+      alert("Failed to start conversation");
+    }
+  };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Cover */}
       <div className="relative">
-        {/* Cover */}
-        <div className="h-48 w-full bg-gray-200 rounded-b-2xl overflow-hidden">
+        <div className="h-40 sm:h-56 w-full bg-gray-200 rounded-b-2xl overflow-hidden">
           {coverUrl && !coverErrored ? (
             <img
               src={coverUrl}
@@ -198,9 +197,9 @@ const handleMessage = async () => {
         </div>
 
         {/* Avatar + header */}
-        <div className="px-4 -mt-12 flex items-end gap-4">
+        <div className="px-4 sm:px-6 -mt-12 flex flex-col sm:flex-row sm:items-end gap-4">
           <div
-            className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white flex items-center justify-center"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white overflow-hidden bg-white flex items-center justify-center"
             style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.08)" }}
           >
             {avatarUrl && !avatarErrored ? (
@@ -216,39 +215,36 @@ const handleMessage = async () => {
           </div>
 
           <div className="flex-1 pb-2">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <div>
                 <h1 className="text-2xl font-bold">{name}</h1>
                 {department && <p className="text-sm text-gray-500">{department}</p>}
               </div>
 
-              <div className="ml-auto flex items-center gap-2">
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-2 sm:ml-auto">
                 {!isSelf && (
                   <>
                     {friendStatus === "none" && (
                       <button
                         onClick={handleSendRequest}
                         disabled={actionLoading}
-                        className="px-4 py-2 rounded-md text-white text-sm font-semibold"
-                        style={{ backgroundColor: "#2d0a6b" }}
+                        className="px-4 py-2 rounded-md text-white text-sm font-semibold bg-[rgb(41,22,112)]"
                       >
                         {actionLoading ? "Sending..." : "Add Friend"}
                       </button>
                     )}
-
                     {friendStatus === "requested_sent" && (
                       <button disabled className="px-4 py-2 rounded-md text-sm font-semibold border">
                         Pending
                       </button>
                     )}
-
                     {friendStatus === "requested_received" && (
                       <>
                         <button
                           onClick={handleAccept}
                           disabled={actionLoading}
-                          className="px-4 py-2 rounded-md text-white text-sm font-semibold"
-                          style={{ backgroundColor: "#2d0a6b" }}
+                          className="px-4 py-2 rounded-md text-white text-sm font-semibold bg-[rgb(41,22,112)]"
                         >
                           {actionLoading ? "Accepting..." : "Accept"}
                         </button>
@@ -261,16 +257,14 @@ const handleMessage = async () => {
                         </button>
                       </>
                     )}
-
                     {friendStatus === "friends" && (
                       <>
-                          <button
-      onClick={handleMessage}
-      className="px-4 py-2 rounded-md text-sm font-semibold"
-      style={{ backgroundColor: "#c2a233", color: "#111827" }}
-    >
-      Message
-    </button>
+                        <button
+                          onClick={handleMessage}
+                          className="px-4 py-2 rounded-md text-sm font-semibold bg-[rgb(196,170,86)] text-gray-900"
+                        >
+                          Message
+                        </button>
                         <button
                           onClick={handleUnfriend}
                           disabled={actionLoading}
@@ -282,12 +276,10 @@ const handleMessage = async () => {
                     )}
                   </>
                 )}
-
                 {isSelf && (
                   <Link
                     to="/profile"
-                    className="px-4 py-2 rounded-md text-white text-sm font-semibold"
-                    style={{ backgroundColor: "#2d0a6b" }}
+                    className="px-4 py-2 rounded-md text-white text-sm font-semibold bg-[rgb(41,22,112)]"
                   >
                     Edit Profile
                   </Link>
@@ -304,20 +296,19 @@ const handleMessage = async () => {
       </div>
 
       {/* Bio + details */}
-      <div className="px-4 mt-4">
+      <div className="mt-6">
         {bio && <p className="mt-2 text-gray-700 whitespace-pre-wrap">{bio}</p>}
 
+        {/* Quick info cards */}
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-2xl shadow p-4">
             <div className="text-sm text-gray-500">Joined</div>
             <div className="font-medium mt-1">{new Date(user.createdAt || Date.now()).toLocaleDateString()}</div>
           </div>
-
           <div className="bg-white rounded-2xl shadow p-4">
             <div className="text-sm text-gray-500">Friends</div>
             <div className="font-medium mt-1">{(user.friends && user.friends.length) || "—"}</div>
           </div>
-
           <div className="bg-white rounded-2xl shadow p-4">
             <div className="text-sm text-gray-500">Department</div>
             <div className="font-medium mt-1">{department || "—"}</div>
@@ -328,11 +319,12 @@ const handleMessage = async () => {
         <div className="mt-6">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-semibold text-gray-800">Recent posts</h3>
-            <div>
-              <Link to={`/profile/${id}/posts`} className="text-sm text-[rgb(41,22,112)] hover:underline">
-                View all posts
-              </Link>
-            </div>
+            <Link
+              to={`/profile/${id}/posts`}
+              className="text-sm text-[rgb(41,22,112)] hover:underline"
+            >
+              View all posts
+            </Link>
           </div>
 
           {loadingPosts ? (
@@ -355,7 +347,6 @@ const handleMessage = async () => {
     </div>
   );
 }
-
 
 
 
