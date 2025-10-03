@@ -25,7 +25,7 @@ const app = express();
 
 // ✅ Allow only your frontend origin
 const FRONTEND_ORIGIN = [
-  "http://localhost:5173",               // local dev
+  "http://localhost:5173",               // local 
   "https://uconnect-gkd3.onrender.com",  // deployed frontend
 ];
 
