@@ -23,18 +23,17 @@ import studentLearningRoutes from "./routes/studentLearning.routes.js";
 dotenv.config();
 const app = express();
 
-// ✅ Allow only your frontend origin
-const FRONTEND_ORIGIN = [
-  "http://localhost:5173",               // local 
+const allowedOrigins = [
+  "http://localhost:5173",               // local dev
   "https://uconnect-gkd3.onrender.com",  // deployed frontend
 ];
 
 app.use(
   cors({
-    origin: function (FRONTEND_ORIGIN, callback) {
+    origin: function (origin, callback) {
       // allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
-      if (FRONTEND_ORIGIN.includes(origin)) {
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
