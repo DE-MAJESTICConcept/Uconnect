@@ -41,9 +41,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Routes (API)
-app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoute); // <-- mount message routes at /api/messages
-app.use("/api/admin", adminRoutes);
+app.use("/auth", authRoutes);
+app.use("/messages", messageRoute); // <-- mount message routes at /api/messages
+app.use("/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/friends", friendsRoutes);
 app.use("/api/posts", postsRoutes);
