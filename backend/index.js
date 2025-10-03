@@ -75,11 +75,18 @@ const server = http.createServer(app);
 // Create Socket.IO server
 const io = new IOServer(server, {
   cors: {
-    origin: allowedOrigins,,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS (socket.io): " + origin));
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
+
 
 // OPTIONAL: verify JWT on socket handshake (recommended for production)
 const JWT_SECRET = process.env.JWT_SECRET || "devsecret";
