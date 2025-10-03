@@ -75,7 +75,7 @@ const server = http.createServer(app);
 // Create Socket.IO server
 const io = new IOServer(server, {
   cors: {
-    origin: FRONTEND_ORIGIN,
+    origin: allowedOrigins,,
     methods: ["GET", "POST"],
     credentials: true,
   },
