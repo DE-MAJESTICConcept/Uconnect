@@ -41,16 +41,16 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Routes (API)
-app.use("/auth", authRoutes);
-app.use("/messages", messageRoute); // <-- mount message routes at /api/messages
-app.use("/admin", adminRoutes);
-app.use("/profile", profileRoutes);
-app.use("/friends", friendsRoutes);
-app.use("/posts", postsRoutes);
-app.use("/users", userRoutes);
-app.use("/styles", stylesRoutes);
-app.use("/items", itemRoutes);
-app.use("/student-learning", studentLearningRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoute); // <-- mount message routes at /api/messages
+app.use("/api/admin", adminRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/friends", friendsRoutes);
+app.use("/api/posts", postsRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/styles", stylesRoutes);
+app.use("/api/items", itemRoutes);
+app.use("/api/student-learning", studentLearningRoutes);
 
 
 
