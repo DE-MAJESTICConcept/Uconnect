@@ -8,7 +8,7 @@ import RegisterPage from "./components/auth/RegisterPage";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Messages from "./components/messages/Messages";
 import Profile from "./components/profile/Profile";
-import ProtectedRoute from "./components/ProteDctedRoute.jsx";
+import ProtectedRoute from "./components/ProtedctedRoute.jsx";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicProfile from "./components/profile/PublicProfile";
 import DiscoverPeople from "./components/profile/DiscoverPeople.jsx";
