@@ -54,6 +54,7 @@ app.use("/api/messages", messageRoute); // <-- mount message routes at /api/mess
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/friends", friendsRoutes);
+app.use("/api/requests", friendsRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/styles", stylesRoutes);
