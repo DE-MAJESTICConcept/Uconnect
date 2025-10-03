@@ -24,16 +24,25 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow only your frontend origin
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173"
+const allowedOrigins = [
+  "http://localhost:5173",               // local dev
+  "https://uconnect-gkd3.onrender.com",  // deployed frontend
+];
 
 app.use(
   cors({
-    origin: FRONTEND_ORIGIN,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // if you’re sending cookies/tokens
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
   })
 );
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
