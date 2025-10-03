@@ -31,7 +31,7 @@ const FRONTEND_ORIGIN = [
 
 app.use(
   cors({
-    origin: function (, callback) {
+    origin: function (FRONTEND_ORIGIN, callback) {
       // allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
       if (FRONTEND_ORIGIN.includes(origin)) {
