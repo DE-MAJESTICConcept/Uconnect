@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Layout/Navbar";
 import Sidebar from "../Layout/Sidebar";
-import Feed from "../Posts/Feed";
+import Feed from "../posts/Feed";
 
 const Dashboard = () => {
   return (
