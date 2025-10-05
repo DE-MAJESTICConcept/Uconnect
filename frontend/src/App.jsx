@@ -5,7 +5,7 @@ import LostButFound from "./components/lostButFound/LostButFound.jsx";
 import LandingPage from "./components/home/LandingPage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
-import Dashboard from "./components/dashboard/Dashboard.jsx";
+import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import GreenCampus from "./components/GREENCAMPUS/Greencampus.jsx";
 import Messages from "./components/messages/Messages";
 import Profile from "./components/profile/Profile";
