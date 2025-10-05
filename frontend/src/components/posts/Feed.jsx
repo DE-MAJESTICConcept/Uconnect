@@ -10,13 +10,9 @@ const Feed = () => {
   // Normalize API response into an array of posts
   const normalizePostsResponse = (resData) => {
     if (!resData) return [];
-    // If backend returns { posts: [...] , total: N }
     if (Array.isArray(resData.posts)) return resData.posts;
-    // If backend returns a bare array [...]
     if (Array.isArray(resData)) return resData;
-    // If backend returns { data: [...] } (axios wrapper in some APIs)
     if (Array.isArray(resData.data)) return resData.data;
-    // Unknown shape
     return [];
   };
 
@@ -26,7 +22,6 @@ const Feed = () => {
       setLoading(true);
       const res = await axios.get("/posts");
       const arr = normalizePostsResponse(res.data);
-      // newest first — make a copy before reversing to avoid mutating original
       const newestFirst = Array.isArray(arr) ? arr.slice().reverse() : [];
       setPosts(newestFirst);
     } catch (err) {
@@ -42,26 +37,34 @@ const Feed = () => {
   }, []);
 
   const handlePostCreated = async () => {
-    // Always refresh from backend to stay consistent
     await fetchPosts();
   };
 
   return (
-    <div className="p-4 max-w-2xl mx-auto w-full">
-      {/* Gradient header */}
+    <div className="p-3 sm:p-4 md:p-6 max-w-2xl mx-auto w-full">
+      {/* Gradient header (responsive text size) */}
       <h1
-        className="text-3xl font-extrabold mb-6 text-transparent bg-clip-text 
+        className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text 
                    bg-gradient-to-r from-[rgb(41,22,112)] via-[rgb(21,79,29)] to-[rgb(196,170,86)]"
       >
         CampusConnect Feed
       </h1>
 
-      {/* Create Post */}
-      <CreatePost onPostCreated={handlePostCreated} />
+      {/* Create Post Box */}
+      <div className="mb-6">
+        <CreatePost onPostCreated={handlePostCreated} />
+      </div>
 
       {/* Posts */}
       {loading ? (
-        <p className="text-center text-gray-500">Loading posts...</p>
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="animate-pulse rounded-lg bg-gray-200 h-24 w-full"
+            ></div>
+          ))}
+        </div>
       ) : posts.length > 0 ? (
         <div className="space-y-4">
           {posts.map((post) => (

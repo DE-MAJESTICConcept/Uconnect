@@ -12,7 +12,7 @@ export function initSocket() {
   // Check JWT expiry
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    if (Date.now() / 1000 > payload.exp) {
+    if (Date.now() / 2000 > payload.exp) {
       console.warn("JWT expired. Socket will not connect. Please login again.");
       return null;
     }

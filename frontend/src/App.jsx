@@ -5,7 +5,8 @@ import LostButFound from "./components/lostButFound/LostButFound.jsx";
 import LandingPage from "./components/home/LandingPage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
+import GreenCampus from "./components/GREENCAMPUS/Greencampus.jsx";
 import Messages from "./components/messages/Messages";
 import Profile from "./components/profile/Profile";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -44,6 +45,15 @@ function App() {
             }
           />
 
+          <Route
+            path="/Green-campus/*"
+            element={
+              <PrivateRoute>
+                <GreenCampus />
+              </PrivateRoute>
+            }
+          />
+
           {/* LostButFound section inside PrivateRoute */}
           <Route
             path="/lostButFound/*"
@@ -62,23 +72,23 @@ function App() {
               </PrivateRoute>
             }
           />
-<Route
-  path="/styles"
-  element={
-    <ProtectedRoute allowedRoles={["teacher","student", "admin"]}>
-      <TeacherStyleForm />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/styles"
+            element={
+              <ProtectedRoute allowedRoles={["teacher","student", "admin"]}>
+                <TeacherStyleForm />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/match-style"
-  element={
-    <ProtectedRoute allowedRoles={["teacher","student", "admin"]}>
-      <StudentLearning />
-    </ProtectedRoute>
-  }
-/>
+      <Route
+        path="/match-style"
+        element={
+          <ProtectedRoute allowedRoles={["teacher","student", "admin"]}>
+            <StudentLearning />
+          </ProtectedRoute>
+        }
+      />
 
 
 

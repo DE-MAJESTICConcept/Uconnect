@@ -13,6 +13,7 @@ import messageRoute from "./routes/message.route.js";
 import friendsRoutes from "./routes/friends.routes.js";
 import adminRoutes from "./routes/admin.route.js";
 import userRoutes from "./routes/user.routes.js";
+import recycleRoutes from './routes/recycle.js';
 import itemRoutes from "./routes/items.routes.js";
 import postsRoutes from "./routes/posts.routes.js";
 import stylesRoutes from "./routes/styles.routes.js";
@@ -39,6 +40,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+
+
+app.use('/api/users', userRoutes);
+app.use('/api/recycles', recycleRoutes);
 
 // Routes (API)
 app.use("/api/auth", authRoutes);

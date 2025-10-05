@@ -180,6 +180,8 @@ export default function PublicProfile() {
   };
 
   return (
+
+    
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Cover */}
       <div className="relative">
@@ -195,7 +197,7 @@ export default function PublicProfile() {
             <div className="w-full h-full bg-gradient-to-r from-[rgb(41,22,112)] via-[rgb(21,79,29)] to-[rgb(196,170,86)]" />
           )}
         </div>
-
+  
         {/* Avatar + header */}
         <div className="px-4 sm:px-6 -mt-12 flex flex-col sm:flex-row sm:items-end gap-4">
           <div

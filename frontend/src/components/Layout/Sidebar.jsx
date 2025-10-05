@@ -32,7 +32,7 @@ const Sidebar = () => {
     { name: "AdminProfile", path: "/admin/profile", icon: <User size={20} /> },
     { name: "Messages", path: "/messages", icon: <MessageCircle size={20} /> },
     { name: "Friends", path: "/friends", icon: <Users size={20} />, badge: pendingCount },
-    { name: "GreenCampus", path: "/green-campus", icon: <Trash size={20} /> },
+    { name: "GreenCampus", path: "/Green-campus", icon: <Trash size={20} /> },
     { name: "LostButFound", path: "/lostButFound", icon: <PackageSearch size={20} /> },
     { name: "TeacherStyle", path: "/styles", icon: <Settings size={20} /> },
     { name: "MatchLearningStyle", path: "/match-style", icon: <Settings size={20} /> },

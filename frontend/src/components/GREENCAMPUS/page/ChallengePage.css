@@ -1,0 +1,138 @@
+/* ChallengePage.css */
+.challenge-bg {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #009e2a 0%, #00e676 100%);
+  overflow: hidden;
+}
+.challenge-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 620px;
+  text-align: center;
+}
+.challenge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.challenge-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.challenge-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #e0ffe0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #009e2a;
+}
+.challenge-username {
+  font-weight: bold;
+  color: #009e2a;
+  font-size: 1.1rem;
+}
+.challenge-points {
+  color: #009e2a;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 2px solid #007a1f;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.challenge-points span {
+  color: #43a047;
+  font-weight: normal;
+  font-size: 1rem;
+  margin-left: 2px;
+}
+.challenge-banner {
+  background: #2e7d32;
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.7rem;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.challenge-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.challenge-table th, .challenge-table td {
+  padding: 0.8rem 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 1px solid #e0ffe0;
+}
+.challenge-table th {
+  background: #2e7d32;
+  color: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.challenge-table tr:last-child td {
+  border-bottom: none;
+}
+.challenge-join-btn {
+  background: #e0ffe0;
+  color: #009e2a;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.challenge-join-btn:hover {
+  background: #b2ffb2;
+}
+.challenge-back-btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.2s;
+}
+.challenge-back-btn:hover {
+  background: #007a1f;
+}
+@media (max-width: 600px) {
+  .challenge-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+    border-radius: 16px;
+  }
+  .challenge-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .challenge-table th, .challenge-table td {
+    font-size: 0.95rem;
+    padding: 0.5rem;
+  }
+}

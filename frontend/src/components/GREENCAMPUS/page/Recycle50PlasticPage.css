@@ -1,0 +1,104 @@
+/* Recycle50PlasticPage.css */
+.challenge-detail-bg {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #009e2a 0%, #00e676 100%);
+}
+.challenge-detail-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 620px;
+  text-align: center;
+}
+.challenge-detail-title {
+  color: #009e2a;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.challenge-detail-box {
+  border: 2px solid #009e2a;
+  border-radius: 16px;
+  padding: 2rem 1rem 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.challenge-detail-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+.challenge-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  color: #009e2a;
+  font-weight: bold;
+}
+.challenge-detail-action {
+  background: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  margin-top: 18px;
+  /* padding: 0.7rem 1.2rem; */
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 40px;
+}
+.challenge-detail-action:hover {
+  background: #009e2a;
+}
+.challenge-detail-claim {
+  background: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  /* padding: 0.7rem 1.2rem; */
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 40px;
+  
+}
+.challenge-detail-claim:hover {
+  background: #009e2a;
+}
+.challenge-detail-back {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+.challenge-detail-back:hover {
+  background: #007a1f;
+}
+@media (max-width: 600px) {
+  .challenge-detail-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+    border-radius: 16px;
+  }
+  .challenge-detail-box {
+    padding: 1rem 0.5rem 1rem 0.5rem;
+  }
+}
