@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://uconnect-backend-2qnn.onrender.com/api/auth/register", {
         name: form.name,
         email: form.email,
         password: form.password,
