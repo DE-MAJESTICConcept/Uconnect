@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // <- works in React
+  baseURL: "https://uconnect-backend-2qnn.onrender.com/api", // <- works in React
   headers: {
     "Content-Type": "application/json",
   },
