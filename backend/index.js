@@ -25,7 +25,7 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow only your frontend origin
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://uconnect-gkd3.onrender.com";
 
 app.use(
   cors({
