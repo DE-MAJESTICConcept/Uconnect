@@ -1,7 +1,7 @@
 // src/api/messagesService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/messages";
+const API_URL = "https://uconnect-backend-2qnn.onrender.com/api/messages";
 
 // --- Normalize sender (_id or id or raw string) ---
 const normalizeSender = (sender) => {
