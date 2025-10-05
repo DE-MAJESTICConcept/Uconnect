@@ -3,7 +3,7 @@ import { getAllProfile } from "../../api/profileService";
 import { getFoundItems, getLostItems } from "../../api/itemsService";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/items"; // adjust if needed
+const API_URL = "https://uconnect-backend-2qnn.onrender.com/api/items"; // adjust if needed
 
 const AdminProfiles = () => {
   const [profiles, setProfiles] = useState([]);
@@ -139,7 +139,7 @@ const AdminProfiles = () => {
                   >
                     <td className="px-4 py-2">
                       <img
-                        src={item.image ? `http://localhost:5000${item.image}` : "/no-image.png"}
+                        src={item.image ? `https://uconnect-backend-2qnn.onrender.com${item.image}` : "/no-image.png"}
                         alt={item.itemName}
                         className="w-16 h-16 object-cover rounded"
                       />
@@ -187,7 +187,7 @@ const AdminProfiles = () => {
                   >
                     <td className="px-4 py-2">
                       <img
-                       src={item.image ? `http://localhost:5000${item.image}` : "/no-image.png"}
+                       src={item.image ? `https://uconnect-backend-2qnn.onrender.com${item.image}` : "/no-image.png"}
                         alt={item.itemName}
                         className="w-16 h-16 object-cover rounded"
                       />
@@ -219,7 +219,7 @@ const AdminProfiles = () => {
               ✖
             </button>
             <img
-               src={selectedItem.image ? `http://localhost:5000${selectedItem.image}` : "/no-image.png"}
+               src={selectedItem.image ? `https://uconnect-backend-2qnn.onrender.com${selectedItem.image}` : "/no-image.png"}
               alt={selectedItem.itemName}
               className="w-full h-48 object-cover rounded mb-4"
             />
@@ -260,139 +260,6 @@ export default AdminProfiles;
 
 
 
-
-
-// import React, { useEffect, useState } from "react";
-// import { getAllProfile } from "../../api/profileService";
-// import { getAllItems } from "../../api/itemsService";
-
-// const AdminProfiles = () => {
-//   const [profiles, setProfiles] = useState([]);
-//   const [items, setItems] = useState([]);
-//   const [loadingProfiles, setLoadingProfiles] = useState(true);
-//   const [loadingItems, setLoadingItems] = useState(true);
-//   const [errorProfiles, setErrorProfiles] = useState("");
-//   const [errorItems, setErrorItems] = useState("");
-
-//   useEffect(() => {
-//     const fetchProfiles = async () => {
-//       try {
-//         const data = await getAllProfile();
-//         setProfiles(Array.isArray(data) ? data : []);
-//       } catch (err) {
-//         console.error("Failed to load profiles", err);
-//         setErrorProfiles("Failed to load profiles");
-//       } finally {
-//         setLoadingProfiles(false);
-//       }
-//     };
-
-//  const fetchItems = async () => {
-//   try {
-//     const data = await getAllItems();
-//     console.log("Fetched items:", data); // 👀 see what comes back
-//     setItems(Array.isArray(data) ? data : []);
-//   } catch (err) {
-//     console.error("Failed to load items", err);
-//     setErrorItems("Failed to load items");
-//   } finally {
-//     setLoadingItems(false);
-//   }
-// };
-
-//     fetchProfiles();
-//     fetchItems();
-//   }, []);
-
-//   if (loadingProfiles || loadingItems)
-//     return <p className="text-center mt-10">Loading...</p>;
-
-//   return (
-//     <div className="p-6 space-y-10">
-//       {/* ------------------- Profiles Table ------------------- */}
-//       <div>
-//         <h1 className="text-2xl font-bold mb-6">All User Profiles</h1>
-//         {errorProfiles && <p className="text-red-500">{errorProfiles}</p>}
-//         {profiles.length === 0 ? (
-//           <p>No users found.</p>
-//         ) : (
-//           <div className="overflow-x-auto">
-//             <table className="min-w-full bg-white rounded-lg shadow">
-//               <thead className="bg-[rgb(41,22,112)] text-white">
-//                 <tr>
-//                   <th className="px-4 py-2 text-left">Name</th>
-//                   <th className="px-4 py-2 text-left">Email</th>
-//                   <th className="px-4 py-2 text-left">Role</th>
-//                   <th className="px-4 py-2 text-left">Department</th>
-//                   <th className="px-4 py-2 text-left">Year</th>
-//                   <th className="px-4 py-2 text-left">Matric/Staff No.</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {profiles.map((user) => (
-//                   <tr
-//                     key={user._id}
-//                     className="border-b hover:bg-gray-50 transition"
-//                   >
-//                     <td className="px-4 py-2">{user.name}</td>
-//                     <td className="px-4 py-2">{user.email}</td>
-//                     <td className="px-4 py-2 capitalize">{user.role}</td>
-//                     <td className="px-4 py-2">{user.profile?.department || "-"}</td>
-//                     <td className="px-4 py-2">{user.profile?.year || "-"}</td>
-//                     <td className="px-4 py-2">{user.profile?.matricNumber || "-"}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         )}
-//       </div>
-
-//       {/* ------------------- Lost & Found Table ------------------- */}
-//       <div>
-//         <h2 className="text-2xl font-bold mb-6">Lost & Found Items</h2>
-//         {errorItems && <p className="text-red-500">{errorItems}</p>}
-//         {items.length === 0 ? (
-//           <p>No items found.</p>
-//         ) : (
-//           <div className="overflow-x-auto">
-//             <table className="min-w-full bg-white rounded-lg shadow">
-//               <thead className="bg-gray-800 text-white">
-//                 <tr>
-//                   <th className="px-4 py-2 text-left">Item Name</th>
-//                   <th className="px-4 py-2 text-left">Status</th>
-//                   <th className="px-4 py-2 text-left">Posted By</th>
-//                   <th className="px-4 py-2 text-left">Email</th>
-//                   <th className="px-4 py-2 text-left">Phone</th>
-//                   <th className="px-4 py-2 text-left">Location</th>
-//                   <th className="px-4 py-2 text-left">Date</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {items.map((item) => (
-//                   <tr
-//                     key={item._id}
-//                     className="border-b hover:bg-gray-50 transition"
-//                   >
-//                     <td className="px-4 py-2">{item.itemName}</td>
-//                     <td className="px-4 py-2 capitalize">{item.status}</td>
-//                     <td className="px-4 py-2">{item.finderInfo?.fullName || "-"}</td>
-//                     <td className="px-4 py-2">{item.finderInfo?.email || "-"}</td>
-//                     <td className="px-4 py-2">{item.finderInfo?.phoneNumber || "-"}</td>
-//                     <td className="px-4 py-2">{item.foundLocation || item.lastLocation || "-"}</td>
-//                     <td className="px-4 py-2">{new Date(item.dateReported).toLocaleDateString()}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminProfiles;
 
 
 
