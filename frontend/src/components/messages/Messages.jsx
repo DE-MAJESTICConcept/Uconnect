@@ -52,7 +52,7 @@ export default function Messages() {
     if (!filePath) return null;
     if (/^https?:\/\//i.test(filePath)) return filePath;
     const cleaned = filePath.replace(/\\/g, "/").replace(/^\/+/, "");
-    return `http://localhost:5000/${cleaned.startsWith("uploads/") ? cleaned : "uploads/" + cleaned}`;
+    return `https://uconnect-backend-2qnn.onrender.com/${cleaned.startsWith("uploads/") ? cleaned : "uploads/" + cleaned}`;
   };
 
   const handleSend = async (e) => {
