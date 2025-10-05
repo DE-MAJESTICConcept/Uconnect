@@ -16,7 +16,7 @@ import axios from "axios";
 
 
 // derive backend origin from VITE_API_BASE_URL (fallback to localhost:5000)
-const BACKEND_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/api\/?$/, "");
+const BACKEND_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "https://uconnect-backend-2qnn.onrender.com").replace(/\/api\/?$/, "");
 
 // helper to force reload of updated images (cache-busting)
 const urlWithCacheBust = (url) => (url ? `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}` : url);
@@ -82,7 +82,7 @@ export default function Profile() {
     const fetchSuggestions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const { data } = await axios.get("http://localhost:5000/api/users/discover", {
+        const { data } = await axios.get("https://uconnect-backend-2qnn.onrender.com/api/users/discover", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSuggestions(data); // assume backend sends an array of users
