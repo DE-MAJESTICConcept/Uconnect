@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/friends",
+  baseURL: "https://uconnect-backend-2qnn.onrender.com/api/friends",
 });
 
 // attach token
