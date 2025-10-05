@@ -23,7 +23,7 @@ export function initSocket() {
 
   if (socket && socket.connected) return socket;
 
-  socket = io(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000", {
+  socket = io(import.meta.env.VITE_API_BASE_URL || "https://uconnect-backend-2qnn.onrender.com", {
     auth: { token },
     transports: ["websocket"],
   });
