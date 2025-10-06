@@ -33,7 +33,7 @@ const DashboardPage = () => {
           <button className="dashboard-action-btn" onClick={() => window.location.href= '/Green-campus/recycle'}>
             Recycle bin {iconRecycle}
           </button>
-          <button className="dashboard-action-btn" onClick={() => window.location.href='/Green-campus/challenge'}>
+          <button className="dashboard-action-btn" onClick={() => window.location.href='Green-campus/challenge'}>
             Challenge {iconChallenge}
           </button>
           <button className="dashboard-action-btn" onClick={() => window.location.href='/Green-campus/reward'}>
