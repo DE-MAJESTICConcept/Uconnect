@@ -73,7 +73,7 @@ const fetchRecentItems = async () => {
               <div className="w-24 h-24 rounded-lg overflow-hidden flex items-center justify-center mb-4 bg-white border-2 border-gray-300">
                 {item.image ? (
                   <img
-                    src={`https://uconnect-backend-2qnn.onrender.com${item.image}`}
+                   src={`http://localhost:5000${item.image}`}
                     alt={item.itemName}
                     className="w-full h-full object-cover"
                     onError={(e) => {
