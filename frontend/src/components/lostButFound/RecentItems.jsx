@@ -29,7 +29,7 @@ const fetchRecentItems = async () => {
 
 
   const handleClaim = (itemId) => {
-    navigate("/report-lost", {
+    navigate("report-lost", {
       state: {
         claimingItem: itemId,
         isClaimMode: true,
@@ -73,7 +73,7 @@ const fetchRecentItems = async () => {
               <div className="w-24 h-24 rounded-lg overflow-hidden flex items-center justify-center mb-4 bg-white border-2 border-gray-300">
                 {item.image ? (
                   <img
-                    src={`http://localhost:5000${item.image}`}
+                    src={`https://uconnect-backend-2qnn.onrender.com${item.image}`}
                     alt={item.itemName}
                     className="w-full h-full object-cover"
                     onError={(e) => {
