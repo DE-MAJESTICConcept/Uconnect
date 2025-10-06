@@ -31,7 +31,7 @@ const SearchBar = () => {
   };
 
   const handleClaim = (itemId) => {
-    navigate("/report-lost", {
+    navigate("report-lost", {
       state: {
         claimingItem: itemId,
         isClaimMode: true,
@@ -96,7 +96,7 @@ const SearchBar = () => {
                 <div className="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center bg-gray-500">
                   {item.image ? (
                     <img
-                      src={`http://localhost:5000${item.image}`}
+                      src={`https://uconnect-backend-2qnn.onrender.com${item.image}`}
                       alt={item.itemName}
                       className="w-full h-full object-cover"
                       onError={(e) => {
