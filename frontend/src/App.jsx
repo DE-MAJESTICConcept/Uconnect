@@ -16,6 +16,7 @@ import DiscoverPeople from "./components/profile/DiscoverPeople.jsx";
 import AdminProfiles from "./components/admin/AdminProfiles.jsx";
 import FriendsManager from "./components/friends/FriendsManager"
 import { ToastProvider } from "./context/ToastProvider";
+import api from "./api/axios.js";
 import SocketToastsBootstrap from "./SocketToastsBootstrap";
 import TeacherStyleForm from "./components/TeacherStyleForm"; // 👈 import
 import StudentLearning from "./components/StudentLearning"; // 👈 import
@@ -24,6 +25,12 @@ import StudentLearning from "./components/StudentLearning"; // 👈 import
 
 
 function App() {
+
+   const token = localStorage.getItem("token");
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
   return (
     <ToastProvider>
       <SocketToastsBootstrap />
