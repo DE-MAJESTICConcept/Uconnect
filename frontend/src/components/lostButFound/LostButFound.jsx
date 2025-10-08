@@ -12,7 +12,7 @@ import found from '../../assets/images/found.png';
 function LostButFound() {
   return (
     // Replaced the simple `min-h-screen` and `main-wrapper` with the specific gradient background and font styles.
-    <div className="min-h-screen bg-gradient-to-br from-[#090c9b] to-[#6c4ebd] text-white flex flex-col justify-center items-center font-['Segoe UI', Tahoma, Geneva, Verdana, sans-serif]">
+    <div className="min-h-screen bg-[rgb(41,22,112)] text-white flex flex-col justify-center items-center font-['Segoe UI', Tahoma, Geneva, Verdana, sans-serif]">
       {/* Replaced the `main-wrapper` div with the bordered container from the first code. */}
       <div className="border-2 border-white rounded-md max-w-[1150px] w-full my-8 px-8 py-8 md:p-8 bg-transparent">
         <Header />
