@@ -1,32 +1,20 @@
 // backend/middleware/uploadMiddleware.js
 import multer from "multer";
-import path from "path";
-import fs from "fs";
+import cloudinary from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const UPLOAD_DIR = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, UPLOAD_DIR);
-  },
-  filename(req, file, cb) {
-    const ext = path.extname(file.originalname) || "";
-    const name = `${file.fieldname}-${Date.now()}${ext}`;
-    cb(null, name);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: "mern-uploads", // Cloudinary folder name
+    resource_type: "auto",  // allows images and videos
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only image and video files are allowed"), false);
-  }
-};
-
-export const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB per file (adjust as needed)
-});
+export const upload = multer({ storage });
