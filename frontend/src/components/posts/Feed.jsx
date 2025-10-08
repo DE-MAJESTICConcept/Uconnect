@@ -47,7 +47,7 @@ const Feed = () => {
         className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text 
                    bg-gradient-to-r from-[rgb(41,22,112)] via-[rgb(21,79,29)] to-[rgb(196,170,86)]"
       >
-        CampusConnect Feed
+        UConnect Feed
       </h1>
 
       {/* Create Post Box */}
