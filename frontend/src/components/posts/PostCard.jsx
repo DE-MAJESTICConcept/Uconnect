@@ -35,11 +35,16 @@ const BACKEND_BASE_URL = "https://uconnect-backend-2qnn.onrender.com";
 const normalizeMediaInput = (media) => {
   if (!media) return [];
 
-  const fixUrl = (url) => {
-    if (!url) return url;
-    if (url.startsWith("http")) return url;
-    return `${BACKEND_BASE_URL}/${url.replace(/^\/+/, "")}`;
-  };
+ function fixUrl(url) {
+  if (!url) return url;
+  if (url.startsWith("http")) {
+    // Replace localhost URLs with Render backend URL
+    return url.replace("localhost:5000", "uconnect-backend-2qnn.onrender.com");
+  }
+  // For relative paths like "uploads/file.jpg"
+  return `https://uconnect-backend-2qnn.onrender.com/${url.replace(/^\/+/, "")}`;
+}
+
 
   if (Array.isArray(media)) {
     return media.map((m) => {
