@@ -35,43 +35,7 @@ const Avatar = ({ name, avatarUrl, size = 40, className = "" }) => {
 };
 
 // Replace the existing MediaGrid with this robust version
-const normalizeMediaInput = (media) => {
-  const ensureFullUrl = (url) => {
-    if (!url) return null;
-    // If it already starts with http or https, return as-is (e.g., Cloudinary)
-    if (/^https?:\/\//i.test(url)) return url;
-    // Otherwise, prefix with your backend base URL
-    return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
-  };
 
-  if (!media) return [];
-  if (Array.isArray(media)) {
-    return media
-      .map((m) => {
-        if (!m) return null;
-        if (typeof m === "string")
-          return { url: ensureFullUrl(m), type: m.endsWith(".mp4") ? "video" : "image" };
-        if (typeof m === "object") {
-          const rawUrl = m.url || m.path || m.src || m.filename;
-          const url = ensureFullUrl(rawUrl);
-          const type =
-            m.type || (typeof rawUrl === "string" && rawUrl.endsWith(".mp4") ? "video" : "image");
-          return url ? { url, type } : null;
-        }
-        return null;
-      })
-      .filter(Boolean);
-  }
-  if (typeof media === "string") {
-    return [{ url: ensureFullUrl(media), type: media.endsWith(".mp4") ? "video" : "image" }];
-  }
-  if (typeof media === "object") {
-    const rawUrl = media.url || media.path || media.src;
-    const url = ensureFullUrl(rawUrl);
-    return url ? [{ url, type: media.type || (String(url).endsWith(".mp4") ? "video" : "image") }] : [];
-  }
-  return [];
-};
 
 
 const MediaGrid = ({ media = [] }) => {
