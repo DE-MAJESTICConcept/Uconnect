@@ -30,43 +30,34 @@ const Avatar = ({ name, avatarUrl, size = 40, className = "" }) => {
 };
 
 // Replace the existing MediaGrid with this robust version
+const BACKEND_BASE_URL = "https://uconnect-backend-2qnn.onrender.com";
+
 const normalizeMediaInput = (media) => {
   if (!media) return [];
-  // Already an array
+
+  const fixUrl = (url) => {
+    if (!url) return url;
+    if (url.startsWith("http")) return url;
+    return `${BACKEND_BASE_URL}/${url.replace(/^\/+/, "")}`;
+  };
+
   if (Array.isArray(media)) {
     return media.map((m) => {
       if (!m) return null;
-      if (typeof m === "string") return { url: m, type: m.endsWith(".mp4") ? "video" : "image" };
-      if (typeof m === "object") {
-        // If object has url or path
-        const url = m.url || m.path || m.src || (m.filename ? m.filename : undefined);
-        const type = m.type || (typeof url === "string" && url.endsWith(".mp4") ? "video" : "image");
-        if (url) return { url, type };
-        // If it's a nested object with numeric keys (rare), try to extract values
-        const values = Object.values(m).filter((v) => v && (typeof v === "string" || v.url));
-        if (values.length > 0) return normalizeMediaInput(values)[0];
-        return null;
-      }
-      return null;
+      const url = typeof m === "string" ? fixUrl(m) : fixUrl(m.url || m.path || m.src);
+      const type = (m.type || (url?.endsWith(".mp4") ? "video" : "image"));
+      return url ? { url, type } : null;
     }).filter(Boolean);
   }
 
-  // If media is a single string
   if (typeof media === "string") {
-    return [{ url: media, type: media.endsWith(".mp4") ? "video" : "image" }];
+    return [{ url: fixUrl(media), type: media.endsWith(".mp4") ? "video" : "image" }];
   }
 
-  // If media is an object with a `media` key or similar
-  if (typeof media === "object") {
-    if (Array.isArray(media.media)) return normalizeMediaInput(media.media);
-    if (Array.isArray(media.items)) return normalizeMediaInput(media.items);
-    // if it's a single object with url
-    const url = media.url || media.path || media.src;
-    if (url) return [{ url, type: media.type || (String(url).endsWith(".mp4") ? "video" : "image") }];
-  }
-
-  // Unknown shape -> empty
   return [];
+};
+
+
 };
 
 const MediaGrid = ({ media = [] }) => {
