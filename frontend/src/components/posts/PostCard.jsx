@@ -2,6 +2,11 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import postsService from "../../api/postsService";
 
+
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+
+
 const Avatar = ({ name, avatarUrl, size = 40, className = "" }) => {
   const [errored, setErrored] = useState(false);
   const initials = (name || "U").charAt(0).toUpperCase();
@@ -31,43 +36,43 @@ const Avatar = ({ name, avatarUrl, size = 40, className = "" }) => {
 
 // Replace the existing MediaGrid with this robust version
 const normalizeMediaInput = (media) => {
+  const ensureFullUrl = (url) => {
+    if (!url) return null;
+    // If it already starts with http or https, return as-is (e.g., Cloudinary)
+    if (/^https?:\/\//i.test(url)) return url;
+    // Otherwise, prefix with your backend base URL
+    return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
+  };
+
   if (!media) return [];
-  // Already an array
   if (Array.isArray(media)) {
-    return media.map((m) => {
-      if (!m) return null;
-      if (typeof m === "string") return { url: m, type: m.endsWith(".mp4") ? "video" : "image" };
-      if (typeof m === "object") {
-        // If object has url or path
-        const url = m.url || m.path || m.src || (m.filename ? m.filename : undefined);
-        const type = m.type || (typeof url === "string" && url.endsWith(".mp4") ? "video" : "image");
-        if (url) return { url, type };
-        // If it's a nested object with numeric keys (rare), try to extract values
-        const values = Object.values(m).filter((v) => v && (typeof v === "string" || v.url));
-        if (values.length > 0) return normalizeMediaInput(values)[0];
+    return media
+      .map((m) => {
+        if (!m) return null;
+        if (typeof m === "string")
+          return { url: ensureFullUrl(m), type: m.endsWith(".mp4") ? "video" : "image" };
+        if (typeof m === "object") {
+          const rawUrl = m.url || m.path || m.src || m.filename;
+          const url = ensureFullUrl(rawUrl);
+          const type =
+            m.type || (typeof rawUrl === "string" && rawUrl.endsWith(".mp4") ? "video" : "image");
+          return url ? { url, type } : null;
+        }
         return null;
-      }
-      return null;
-    }).filter(Boolean);
+      })
+      .filter(Boolean);
   }
-
-  // If media is a single string
   if (typeof media === "string") {
-    return [{ url: media, type: media.endsWith(".mp4") ? "video" : "image" }];
+    return [{ url: ensureFullUrl(media), type: media.endsWith(".mp4") ? "video" : "image" }];
   }
-
-  // If media is an object with a `media` key or similar
   if (typeof media === "object") {
-    if (Array.isArray(media.media)) return normalizeMediaInput(media.media);
-    if (Array.isArray(media.items)) return normalizeMediaInput(media.items);
-    // if it's a single object with url
-    const url = media.url || media.path || media.src;
-    if (url) return [{ url, type: media.type || (String(url).endsWith(".mp4") ? "video" : "image") }];
+    const rawUrl = media.url || media.path || media.src;
+    const url = ensureFullUrl(rawUrl);
+    return url ? [{ url, type: media.type || (String(url).endsWith(".mp4") ? "video" : "image") }] : [];
   }
-
-  // Unknown shape -> empty
   return [];
 };
+
 
 const MediaGrid = ({ media = [] }) => {
   try {
