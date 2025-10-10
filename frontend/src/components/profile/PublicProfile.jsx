@@ -7,7 +7,7 @@ import postsService from "../../api/postsService";
 import MutualFriends from "./MutualFriends";
 import { ensureConversation } from "../../api/messagesService";
 
-const BACKEND_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/api\/?$/, "");
+const BACKEND_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "https://uconnect-backend-2qnn.onrender.com/api").replace(/\/api\/?$/, "");
 const urlOrAbsolute = (val) => (val ? (String(val).startsWith("http") ? val : `${BACKEND_ORIGIN}${val}`) : null);
 
 const AvatarFallback = ({ name, size = 72 }) => {
