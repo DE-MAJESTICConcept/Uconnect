@@ -58,7 +58,6 @@ const normalizeMediaInput = (media) => {
 };
 
 
-};
 
 const MediaGrid = ({ media = [] }) => {
   try {
