@@ -35,6 +35,13 @@ app.use(
     credentials: true, // if you’re sending cookies/tokens
   })
 );
+// Force HTTPS for URL generation when deployed on Render
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === "production") {
+    req.protocol = "https";
+  }
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
