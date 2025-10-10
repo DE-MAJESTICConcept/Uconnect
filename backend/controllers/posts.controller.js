@@ -4,14 +4,16 @@ import Post from "../models/posts.models.js";
 import User from "../models/user.models.js";
 
 /** Convert multer files -> media objects */
-const filesToMedia = (files = [], req) => {
+/** Convert multer (CloudinaryStorage) files → media objects */
+const filesToMedia = (files = []) => {
   if (!files || !files.length) return [];
   return files.map((f) => {
-    const url = `${req.protocol}://${req.get("host")}/uploads/${f.filename}`;
+    const url = f.path || f.secure_url || f.url; // Cloudinary gives secure_url
     const type = (f.mimetype || "").startsWith("video/") ? "video" : "image";
     return { url, type };
   });
 };
+
 
 // GET /api/posts
 export const getAllPosts = async (req, res) => {
@@ -145,10 +147,7 @@ export const createComment = async (req, res) => {
     const { content } = req.body;
 
     // build media array if you accept uploads via multer
-    const media = (req.files || []).map((f) => ({
-      url: `${req.protocol}://${req.get("host")}/uploads/${f.filename}`,
-      type: f.mimetype?.startsWith("video") ? "video" : "image",
-    }));
+    const media = filesToMedia(req.files);
 
     const comment = {
       author: req.user._id,
