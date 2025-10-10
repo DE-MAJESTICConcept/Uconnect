@@ -9,3 +9,9 @@ export default defineConfig({
     tailwindcss()
   ],
 })
+// vite.config.js
+export default {
+  build: {
+    chunkSizeWarningLimit: 1600, // in KB (1.6 MB)
+  },
+};
