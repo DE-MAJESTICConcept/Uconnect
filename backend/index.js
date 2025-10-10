@@ -35,10 +35,13 @@ app.use(
     credentials: true, // if you’re sending cookies/tokens
   })
 );
-// Force HTTPS for URL generation when deployed on Render
+// Tell Express to trust the proxy (important for Render and similar platforms)
+app.enable("trust proxy");
+
+// Force HTTPS redirect in production
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV === "production") {
-    req.protocol = "https";
+  if (process.env.NODE_ENV === "production" && req.protocol === "http") {
+    return res.redirect(`https://${req.get("host")}${req.originalUrl}`);
   }
   next();
 });
