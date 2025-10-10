@@ -4,7 +4,14 @@ import postsService from "../../api/postsService";
 
 
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const BACKEND_BASE_URL = "https://uconnect-backend-2qnn.onrender.com";
+
+const resolveUrl = (url) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  return `${BACKEND_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+};
+
 
 
 const Avatar = ({ name, avatarUrl, size = 40, className = "" }) => {
